@@ -4,7 +4,10 @@
   "version": "4.0.1",
   "homepage": "https://github.com/drugan/csscomb.jsx",
   "author": "Mikhail Troshev <mishanga@yandex-team.ru>",
-  "repository": "https://github.com/drugan/csscomb.jsx",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/drugan/csscomb.jsx.git"
+  },
   "license": "MIT",
   "maintainers": [
     {
