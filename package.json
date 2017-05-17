@@ -1,10 +1,10 @@
 {
-  "name": "csscomb-ext",
+  "name": "csscombx",
   "description": "CSS coding style formatter",
   "version": "4.0.1",
-  "homepage": "https://github.com/drugan/csscomb.js-ext",
+  "homepage": "https://github.com/drugan/csscomb.jsx",
   "author": "Mikhail Troshev <mishanga@yandex-team.ru>",
-  "repository": "https://github.com/drugan/csscomb.js-ext",
+  "repository": "https://github.com/drugan/csscomb.jsx",
   "license": "MIT",
   "maintainers": [
     {
@@ -15,7 +15,7 @@
     {
       "name": "Vladimir Proshin",
       "email": "proshins@gmail.com",
-      "web": "https://github.com/drugan/csscomb.js-ext"
+      "web": "https://github.com/drugan/csscomb.jsx"
     }
   ],
   "engines": {
