@@ -1,8 +1,8 @@
 # CSScomb [![CSSComb](logo.png)](http://csscomb.com/)
-[![Build Status](https://travis-ci.org/csscomb/csscomb.js.svg?branch=master)](http://travis-ci.org/csscomb/csscomb.js)
+[![Build Status](https://travis-ci.org/drugan/csscombx.svg?branch=master)](http://travis-ci.org/drugan/csscombx)
 [![NPM version](https://badge.fury.io/js/csscomb.svg)](http://badge.fury.io/js/csscomb)
-[![Dependency Status](https://david-dm.org/csscomb/csscomb.js.svg)](https://david-dm.org/csscomb/csscomb.js)
-[![devDependency Status](https://david-dm.org/csscomb/csscomb.js/dev-status.svg)](https://david-dm.org/csscomb/csscomb.js#info=devDependencies)
+[![Dependency Status](https://david-dm.org/drugan/csscombx.svg)](https://david-dm.org/drugan/csscombx)
+[![devDependency Status](https://david-dm.org/drugan/csscombx/dev-status.svg)](https://david-dm.org/drugan/csscombx#info=devDependencies)
 
 CSScomb is a coding style formatter for CSS.
 You can easily write your own [configuration](doc/configuration.md) to make
@@ -27,25 +27,25 @@ If you'd like to become a maintainer of this project, please ping
 Global installation (for use as a command-line tool):
 
 ```bash
-npm install csscomb -g
+npm install csscombx -g
 ```
 
 Local installation (for use as a command-line tool within current directory):
 
 ```bash
-npm install csscomb
+npm install csscombx
 ```
 
 To install as a project dependency (the package will appear in your dependencies):
 
 ```bash
-npm install csscomb --save
+npm install csscombx --save
 ```
 
 To install as a dev dependency (the package will appear in your devDependencies):
 
 ```bash
-npm install csscomb --save-dev
+npm install csscombx --save-dev
 ```
 
 ## 2. [Configure](doc/configuration.md)
@@ -62,13 +62,13 @@ There are a number of ways to configure CSScomb:
 ### [Command Line](doc/usage-cli.md)
 
 ```bash
-csscomb assets/css
+csscombx assets/css
 ```
 
 ### [Node.js module](doc/usage-node.md)
 
 ```js
-var Comb = require('csscomb');
+var Comb = require('csscombx');
 var comb = new Comb('zen');
 comb.processPath('assets/css');
 ```
@@ -98,11 +98,12 @@ Thanks for assistance and contributions:
 [@schneyra](https://github.com/schneyra),
 [@thejameskyle](https://github.com/thejameskyle),
 [@vecmezoni](https://github.com/vecmezoni)
+[@drugan](https://github.com/drugan)
 
 ## License
 
 This software is released under the terms of the
-[MIT license](https://github.com/csscomb/csscomb.js/blob/master/LICENSE).
+[MIT license](https://github.com/drugan/csscombx/blob/master/LICENSE).
 
 ## Other projects
 * https://github.com/senchalabs/cssbeautify

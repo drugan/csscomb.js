@@ -1,5 +1,18 @@
 # Changelog
 
+## 4.1.1 - 2017-05-19
+
+- Added empty new line in the end of cli help text.
+- Fixed bug in the insertNewlines() of lines-between-rulesets.js.
+- Added detect() method for the lines-between-rulesets.js.
+- Added detect() method for the space-between-declarations.js.
+- Added detect() method for the tab-size.js.
+
+## 4.1.0 - 2017-05-16
+
+- Added new `--tty-mode` option for cli.
+- Fixed an issue with calling gpe methods on non-existing nodes.
+
 ## 4.0.1 - 2017-02-28
 
 - Added `babel-polyfill` to dependencies.

@@ -11,11 +11,11 @@
 
     ```bash
 # Clone your fork of the repo into the current directory
-git clone https://github.com/<your-username>/csscomb.js
+git clone https://github.com/<your-username>/csscombx
 # Navigate to the newly cloned directory
 cd csscomb.js
 # Assign the original repo to a remote called `upstream`
-git remote add upstream https://github.com/csscomb/csscomb.js
+git remote add upstream https://github.com/drugan/csscombx
 ```
 
 2. If you cloned a while ago, get the latest changes from upstream:
@@ -24,8 +24,6 @@ git remote add upstream https://github.com/csscomb/csscomb.js
 git checkout dev
 git pull upstream dev
 ```
-
-    **IMPORTANT**: We are using `dev` branch for development, not `master`.
 
 3. Create a topic branch for your feature, change, or fix:
 
@@ -36,7 +34,7 @@ git checkout -b <topic-branch-name>
 4. Patches and features will not be accepted without tests.
    Run `npm test` to check that all tests pass after you've made changes.
 
-5. Update the `README.md` or [docs](https://github.com/csscomb/csscomb.js/tree/master/doc) if there were corresponding changes or new options.
+5. Update the `README.md` or [docs](https://github.com/drugan/csscombx/tree/master/doc) if there were corresponding changes or new options.
 
 6. Locally rebase the upstream development branch into your topic branch:
 
