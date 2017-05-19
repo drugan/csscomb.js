@@ -1,18 +1,14 @@
 {
-  "name": "csscomb",
+  "name": "csscombx",
   "description": "CSS coding style formatter",
   "version": "4.0.1",
-  "homepage": "http://csscomb.com/",
+  "homepage": "https://github.com/drugan/csscombx",
   "author": "Mikhail Troshev <mishanga@yandex-team.ru>",
-  "repository": "https://github.com/csscomb/csscomb.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/drugan/csscombx.git"
+  },
   "license": "MIT",
-  "maintainers": [
-    {
-      "name": "Tony Ganch",
-      "email": "tonyganch+github@gmail.com",
-      "web": "http://tonyganch.com/"
-    }
-  ],
   "engines": {
     "node": ">= 0.10.0"
   },
