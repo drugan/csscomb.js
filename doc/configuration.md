@@ -6,25 +6,26 @@ There are a number of ways how you can do it.
 ## Use one of predefined configs
 
 There are [several config
-files](https://github.com/csscomb/csscomb.js/tree/master/config)
+files](https://github.com/drugan/csscombx/tree/master/config)
 included in this project you can use right away:
 
+- `drupal`
 - `csscomb`
 - `zen`
 - `yandex`
 
-In CLI, `csscomb` is a default config file that is used unless you provide your
+In CLI, `drupal` is a default config file that is used unless you provide your
 own.
 In Node.js, you can pass config's name to constructor:
 
 ```js
-var Comb = require('csscomb');
+var Comb = require('csscombx');
 var comb = new Comb('yandex');
 ```
 
 Feel free to use predefined configs as examples: copy one of them and modify to
 your taste.
-Just remember to save the file as `.csscomb.json` in project's root.
+Just remember to save the file as `.csscombx.json` in project's root.
 
 ## Create custom config
 
@@ -56,7 +57,7 @@ Take a look at [available options](options.md) and choose those you need.  You c
 
 ### Where to put config
 
-CSScomb will look for a file named `.csscomb.json`.
+CSScomb will look for a file named `.csscombx.json`.
 The best way is to put the file in your project's root.
 However, if you want to use one config for several projects, it's fine to put
 the file inside a parent folder.
@@ -66,12 +67,12 @@ CSScomb will look for a config file recursively up untill it reaches your
 Remember that you can always set custom path.
 In CLI:
 ```bash
-csscomb -c path/to/config assets/css
+csscombx -c path/to/config ./my-styles/sass
 ```
 
 In Node.js:
 ```js
-var Comb = require('csscomb');
+var Comb = require('csscombx');
 var config = require('path/to/config');
 var comb = new Comb(config);
 ```
@@ -83,10 +84,10 @@ CSScomb will detect the coding style and use it as a config.
 All existing properties except `sort-order` can be configured this way:
 
 ```bash
-csscomb -d example.css > .csscomb.json
+csscombx -d example.css > .csscombx.json
 ```
 
-This will create `.csscomb.json` based on options that can be detected in
+This will create `.csscombx.json` based on options that can be detected in
 `example.css` file.
 
 Let's say your template file has following content:

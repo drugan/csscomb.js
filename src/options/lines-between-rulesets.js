@@ -5,6 +5,10 @@ let gonzales = require('gonzales-pe');
 let option = {
   newLinesString: '',
   newLinesNode: null,
+  valueNestedRuleset: 0,
+  valueNestedAtrule: 0,
+  hasNestedRuleset: false,
+  hasNestedAtrule: false,
 
   /**
    * Option's name as it's used in config.
@@ -49,16 +53,25 @@ let option = {
   ** pass numbers through, but creates a string of spaces of the same length.
   */
   setValue(value) {
-    let valueType = typeof value;
 
-    if (valueType !== 'number') {
+    if (typeof value[0] === 'number') {
+
+      if (typeof value[1] === 'number') {
+        this.valueNestedRuleset = value[1];
+        if (typeof value[2] === 'number') {
+          this.valueNestedAtrule = value[2];
+        }
+      }
+      value = value[0];
+    }
+    if (typeof value !== 'number') {
       throw new Error('Value must be a number.');
     }
 
     return value;
   },
 
-  buildSpacing(syntax) {
+  buildSpacing(syntax, value) {
     let spacing = '';
     let numNewLines = 0;
     let newLinesOffset = 1;
@@ -67,7 +80,7 @@ let option = {
       newLinesOffset = 0;
     }
 
-    numNewLines = Math.round(this.value) + newLinesOffset;
+    numNewLines = Math.round(value) + newLinesOffset;
 
     for (var i = 0; i < numNewLines; i++) {
       spacing += '\n';
@@ -81,7 +94,9 @@ let option = {
    * @param {Node} ast
    */
   process(ast) {
-    this.newLinesString = this.buildSpacing(ast.syntax);
+    this.newLinesString = this.buildSpacing(ast.syntax, this.value);
+    this.nestedRulesetNewLinesString = this.buildSpacing(ast.syntax, this.valueNestedRuleset);
+    this.nestedAtruleNewLinesString = this.buildSpacing(ast.syntax, this.valueNestedAtrule);
     this.newLinesNode = gonzales.createNode({
       type: 'space',
       content: this.newLinesString
@@ -90,6 +105,9 @@ let option = {
   },
 
   processBlock(x) {
+  this.hasNestedRuleset = false;
+  this.hasNestedAtrule = false;
+
     if (x.is('stylesheet')) {
       // Check all @rules
       this.processAtRules(x);
@@ -98,16 +116,29 @@ let option = {
       this.processRuleSets(x);
     }
 
-    x.forEach((node) => {
+
+    x.forEach((node, index) => {
+
       if (!node.is('block')) {
         return this.processBlock(node);
       }
+    node.forEach(anode => {
+
+      if (anode.type === 'ruleset') {
+        this.hasNestedRuleset = true;
+        return;
+      }
+      else if (anode.type === 'atrule') {
+        this.hasNestedAtrule = true;
+        return;
+      }
+    });
 
       // Check all @rules
-      this.processAtRules(node);
+      this.processAtRules(node, index);
 
       // Check all rulesets
-      this.processRuleSets(node);
+      this.processRuleSets(node, index);
 
       this.processBlock(node);
     });
@@ -115,13 +146,13 @@ let option = {
 
   processAtRules(node) {
     node.forEach('atrule', (atRuleNode, index) => {
-      this.insertNewlines(node, index);
+      this.insertNewlines(node, index, 'atrule');
     });
   },
 
   processRuleSets(node) {
     node.forEach('ruleset', (ruleSetNode, index) => {
-      this.insertNewlines(node, index);
+      this.insertNewlines(node, index, 'ruleset');
     });
   },
 
@@ -129,14 +160,14 @@ let option = {
     if (!node) {
       return false;
     }
-    return (node.is('singlelineComment') || node.is('multilineComment'));
+    return node.is('singlelineComment') || node.is('multilineComment');
   },
 
   isNewline(node) {
     if (!node) {
       return false;
     }
-    return (node.content === '\n');
+    return node.content === '\n';
   },
 
   prevLineIsComment(parent, index) {
@@ -160,14 +191,10 @@ let option = {
 
     if (parentSyntax === 'sass') {
       prevMinusTwoChild = parent.get(index - 3);
-      return (
-        this.isComment(prevMinusTwoChild) &&
-        this.isNewline(prevMinusOneChild) &&
-        prevChild.is('space')
-      );
+      return this.isComment(prevMinusTwoChild) && this.isNewline(prevMinusOneChild) && prevChild.is('space');
     }
 
-    return (this.isComment(prevMinusOneChild) && prevChild.is('space'));
+    return this.isComment(prevMinusOneChild) && prevChild.is('space');
   },
 
   /*
@@ -202,24 +229,39 @@ let option = {
     return lastNonCommentIndex;
   },
 
-  insertNewlinesAsString(node) {
+  insertNewlinesAsString(node, rule) {
     let content = node.content;
     let lastNewline = content.lastIndexOf('\n');
     let newContent;
+    let newLinesString = this.newLinesString;
+
+    if (this.hasNestedRuleset && rule === 'ruleset') {
+      newLinesString = this.nestedRulesetNewLinesString;
+    } else if (this.hasNestedAtrule && rule === 'atrule') {
+      newLinesString = this.nestedAtruleNewLinesString;
+    }
 
     if (lastNewline > -1) {
       content = content.substring(lastNewline + 1);
     }
 
-    newContent = this.newLinesString + content;
+    newContent = newLinesString + content;
     node.content = newContent;
   },
 
-  insertNewlinesAsNode(node) {
-    node.insert(node.length, this.newLinesNode);
+  insertNewlinesAsNode(node, rule) {
+    let newNode = this.newLinesNode;
+
+    if (this.hasNestedRuleset && rule === 'ruleset') {
+      newNode.content = this.nestedRulesetNewLinesString;
+    } else if (this.hasNestedAtrule && rule === 'atrule') {
+      newNode.content = this.nestedAtruleNewLinesString;
+    }
+
+    node.insert(node.length, newNode);
   },
 
-  insertNewlines(node, index) {
+  insertNewlines(node, index, rule) {
     let prevChild = node.get(index - 1);
     let shouldInsert = false;
 
@@ -240,9 +282,9 @@ let option = {
 
       if (prevChild) {
         if (prevChild.is('space')) {
-          this.insertNewlinesAsString(prevChild);
+          this.insertNewlinesAsString(prevChild, rule);
         } else {
-          this.insertNewlinesAsNode(prevChild);
+          this.insertNewlinesAsNode(prevChild, rule);
         }
       }
     }

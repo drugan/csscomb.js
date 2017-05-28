@@ -913,10 +913,24 @@ Number of line breaks between rulesets or @rules.
 Acceptable values:
 
 * `{Number}` — number of newlines;
+* `{Array}`  — an array with one through three integer elements;
 
-Example: `{ "lines-between-rulesets":  1}`
+Examples:
+`{ "lines-between-rulesets":  1}`
+`{ "lines-between-rulesets":  [1]}`
+`{ "lines-between-rulesets":  [0, 2]}`
+`{ "lines-between-rulesets":  [2, 0, 1]}`
+
+The first value in the array defines the number of lines between root rulesets and/or
+at-rules in the stylesheet. The second value defines the number of lines between
+all the nested rulesets inside a parent ruleset. The third number defines the
+number of lines between all the nested at-rules inside a parent ruleset.
+The default value for the omitted nested ruleset or at-rule is 0. If the only
+root rulesets and/or at-rules setting is required, it may be represented as
+a standalone integer instead of the array element.
 
 ```scss
+// example.**scss**
 // Before:
 .foo {
     @include border-radius(5px);
@@ -926,31 +940,33 @@ Example: `{ "lines-between-rulesets":  1}`
             height: 50px;
         }
     }
-}.bar {
-    border: 1px solid red;
-    @media (min-width: 500px) {
-        width: 50px;
-    }
 }
-
-// After:
-.foo {
-    @include border-radius(5px);
-    background: red;
-
-    .baz {
-        .test {
-            height: 50px;
-        }
-    }
-}
-
 .bar {
     border: 1px solid red;
-
     @media (min-width: 500px) {
         width: 50px;
     }
+}
+
+// { "lines-between-rulesets":  **[2, 0, 1]}**
+// After:
+.foo {
+  @include border-radius(5px);
+  background: red;
+  .baz {
+    .test {
+      height: 50px;
+    }
+  }
+}
+
+
+.bar {
+  border: 1px solid red;
+
+  @media (min-width: 500px) {
+    width: 50px;
+  }
 }
 ```
 
@@ -963,7 +979,7 @@ Acceptable value: `true`.
 Example: `{ "verbose": true }`
 
 ```bash
-csscomb ./test
+csscombx ./test
 
 ✓ test/integral.origin.css
   test/integral.expect.css

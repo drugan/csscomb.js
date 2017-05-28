@@ -1,5 +1,13 @@
 # Changelog
 
+## 4.2.0 - 2017-05-28
+
+- Added drupal.json as a default config file.
+- Fixed unhandled Promise rejection bug while in cli mode.
+- Added meaningful labels for processed files while in verbose cli mode.
+- Fixed not working processed files counter while in verbose cli mode.
+- Added lines-between-rulesets value as array option (for nested rulesets and at-rules).
+
 ## 4.1.1 - 2017-05-19
 
 - Added empty new line in the end of cli help text.

@@ -1,33 +1,33 @@
 # Command Line usage
 
-To run `csscomb`:
+To run `csscombx`:
 
 ```bash
-csscomb path[ path[...]]
+csscombx path[ path[...]]
 ```
 
 `path` can be either a directory or a file:
 
 ```bash
-csscomb assets/css public/styles.css
+csscombx ./my-styles public/styles.css
 ```
 
 If you installed the package locally, use local bin file instead:
 
 ```bash
-./node_modules/.bin/csscomb assets/css public/styles.css
+./node_modules/.bin/csscombx ./my-styles public/styles.css
 ```
 
 ## Options
 
 ### help
 
-If you run `csscomb -h`, it will show some helpful information:
+If you run `csscombx -h`, it will show some helpful information:
 
 ```bash
-csscomb -h
+csscombx -h
 
-  Usage: csscomb [options] <file ...>
+  Usage: csscombx [options] <file ...>
 
   Options:
 
@@ -42,13 +42,13 @@ csscomb -h
 
 ### config
 
-If you want to use custom config instead of predefined `csscomb.json` just
-put a file named `.csscomb.json` to project's root (see [configuration
+If you want to use custom config instead of predefined `drupal.json` just
+put a file named `.csscombx.json` to project's root (see [configuration
 docs](configuration.md#where-to-put-config) for more information).
 However, if for some reason you would like to use custom path, do it this way:
 
 ```bash
-csscomb -c path/to/config styles.css
+csscombx -c path/to/config styles.css
 ```
 
 ### detect
@@ -56,7 +56,7 @@ csscomb -c path/to/config styles.css
 If you want to generate a config file based on a template file, run:
 
 ```bash
-csscomb -d example.css > .csscomb.json
+csscombx -d example.css > .csscombx.json
 ```
 
 See [configuration docs](configuration.md#generate-config-from-a-template) for
@@ -64,39 +64,21 @@ more information.
 
 ### lint
 
-CSScomb can be used as a linter, i.e. telling you what should be changed instead
+CSScomb can be used as a `--lint` or `-l` argument, i.e. telling you what should be changed instead
 of modifying anything.
-This option should be combined with `--verbose`:
+This option should be combined with `--verbose` or `-v` argument which is optional when
+processing files with a regular ```csscombx``` command. Useful for debugging purposes.
 
 ```bash
-csscomb -lv assets/css
+csscombx -lv ./my-styles
 
-  assets/css/main.scss
-! assets/css/main.scss
-! assets/css/main.scss
-! assets/css/main.scss
+good: ./my-styles/main.scss
+bad: ./my-styles/main.scss
+empty: ./my-styles/main.scss
+invalid: ./my-styles/main.scss
+now is good: ./my-styles/main.scss
 
 4 files processed
 0 files fixed
 spent: 30ms
-```
-
-Exclamation mark is a sign that something is wrong with the file.
-
-### verbose
-
-If you are curious or you just like a lot of output info, `--verbose` is your
-good friend:
-
-```bash
-csscomb -v assets/css
-
-  assets/css/main.scss
-✓ assets/css/main.scss
-✓ assets/css/main.scss
-✓ assets/css/main.scss
-
-4 files processed
-3 files fixed
-spent: 33ms
 ```

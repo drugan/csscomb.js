@@ -184,26 +184,29 @@ class Comb {
 
     if (!this._shouldProcessFile(path)) return;
 
-    return new Promise(resolve => {
+  return new Promise(function(resolve) {
       vfs.read(path, 'utf8').then(function(data) {
         let syntax = that._extractSyntax(path);
         that.processString(data, {
           syntax: syntax,
           filename: path
         }).then(function(processedData) {
-          if (data === processedData) {
-            if (that.verbose) console.log(' ', path);
+          // Suppose there is no style file content shorter than 2 characters.
+          if (!processedData || processedData.length < 3) {
+            var status = !processedData ? 'empty:' : 'invalid:';
+            if (that.verbose) console.log(status, path);
             resolve(0);
-            return;
           }
-
-          let tick = that.lint ? '!' : '✓';
-          if (that.lint) {
-            if (that.verbose) console.log(tick, path);
-            resolve(1);
+          else if (data === processedData) {
+            if (that.verbose) console.log('good:', path);
+            resolve(0);
+          }
+          else if (that.lint) {
+            if (that.verbose) console.log('bad:', path);
+            resolve(0);
           } else {
-            return vfs.write(path, processedData, 'utf8').then(function() {
-              if (that.verbose) console.log(tick, path);
+            vfs.write(path, processedData, 'utf8').then(function() {
+              if (that.verbose) console.log('now is good:', path);
               resolve(1);
             });
           }
@@ -238,6 +241,7 @@ class Comb {
    * @returns {Promise<string>} Resolves in processed string
    */
   processString(text, options) {
+    this.options = options;
     return this._parseString(text, options)
         .then(this._processTree.bind(this))
         .then((ast) => ast.toString());
@@ -345,25 +349,19 @@ class Comb {
     let syntax = options && options.syntax;
     let filename = options && options.filename || '';
     let context = options && options.context;
-    let tree;
-
-    if (!text) return this.lint ? [] : text;
+    let tree = [];
 
     if (!syntax) syntax = 'css';
     this.syntax = syntax;
-
-    return new Promise(function(resolve) {
       try {
         tree = gonzales.parse(text, {syntax: syntax, rule: context});
-        resolve(tree, filename);
       } catch (e) {
-        let version = require('../package.json').version;
-        let message = filename ? [filename] : [];
-        message.push(e.message);
-        message.push('CSScomb Core version: ' + version);
-        e.stack = e.message = message.join('\n');
-        throw e;
+        console.log('\nString parsing exception in: ', filename, '\n', e, '\n');
       }
+
+    return new Promise(function(resolve, reject) {
+        resolve(tree, filename);
+        reject();
     });
   }
 
@@ -388,13 +386,20 @@ class Comb {
    */
   _processTree(ast) {
     let config = this.config;
+    let astOriginal = ast;
+    let that = this;
 
     this.plugins.filter(function(plugin) {
       return plugin.value !== null &&
              typeof plugin.process === 'function' &&
              plugin.syntax.indexOf(ast.syntax) !== -1;
     }).forEach(function(plugin) {
-      plugin.process(ast, config);
+      try {
+        plugin.process(ast, config);
+      } catch (e) {
+        console.log('\nThe option exception in: ', that.options.filename, '\n', e, '\n');
+        return astOriginal;
+      }
     });
 
     return ast;

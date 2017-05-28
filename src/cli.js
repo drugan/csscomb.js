@@ -4,7 +4,7 @@
  * Command line implementation for CSSComb
  *
  * Usage example:
- * ./node_modules/.bin/csscomb [options] [file1 [dir1 [fileN [dirN]]]]
+ * ./node_modules/.bin/csscombx [options] [file1 [dir1 [fileN [dirN]]]]
  */
 var fs = require('fs');
 var parseArgs = require('minimist');
@@ -103,7 +103,7 @@ function getConfig() {
 
   var config;
   if (!fs.existsSync(configPath)) {
-    config = require('../config/csscomb.json');
+    config = require('../config/drupal.json');
   } else if (configPath.match(/\.css$/)) {
     config = Comb.detectInFile(configPath);
   } else {
@@ -149,6 +149,7 @@ function processFiles(files) {
     process.stderr.write(error.stack);
     process.exit(1);
   }).then(c => {
+    c = typeof c[0] === 'object' ? c[0] : c;
     var tbchanged = c.filter(isChanged => {
       return isChanged !== undefined;
     }).reduce((a, b) => {

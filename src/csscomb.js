@@ -105,7 +105,8 @@ CSScomb.detectInString = function detectInString(text, options) {
  * @returns {Object} Configuration object
  */
 CSScomb.getConfig = function getConfig(name) {
-  const DEFAULT_CONFIG_NAME = 'csscomb';
+  // The default config file path: config/drupal.json
+  const DEFAULT_CONFIG_NAME = 'drupal';
   name = name || DEFAULT_CONFIG_NAME;
 
   if (typeof name !== 'string') {
@@ -166,7 +167,7 @@ CSScomb.getCustomConfigPath = function getCustomConfigPath(configPath) {
              process.env.HOMEPATH ||
              process.env.USERPROFILE;
 
-  configPath = configPath || path.join(process.cwd(), '.csscomb.json');
+  configPath = configPath || path.join(process.cwd(), '.csscombx.json');
 
   // If we've finally found a config, return its path:
   if (fs.existsSync(configPath)) return fs.realpathSync(configPath);
@@ -183,7 +184,7 @@ CSScomb.getCustomConfigPath = function getCustomConfigPath(configPath) {
 
   // If there is no config in this directory, go one level up and look for
   // a config there:
-  configPath = path.join(parentDirname, '.csscomb.json');
+  configPath = path.join(parentDirname, '.csscombx.json');
   return CSScomb.getCustomConfigPath(configPath);
 };
 

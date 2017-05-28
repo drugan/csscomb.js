@@ -6,7 +6,7 @@ Workflow can look like this:
 
 ```js
 // Require:
-var Comb = require('csscomb');
+var Comb = require('csscombx');
 var config = require('path/to/config');
 
 // Configure:
@@ -57,7 +57,7 @@ Note that this is a static method.
 Parameters:
 
 * `{String} name` — config's name. Should be one of the following:
-  `csscomb`, `zen` or `yandex`.
+  `drupal`, `csscomb`, `zen` or `yandex`.
 
 Example: Configure CSScomb using predefined `zen` sort order that is slightly
 modified.

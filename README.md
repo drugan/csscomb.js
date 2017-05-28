@@ -4,9 +4,13 @@
 [![Dependency Status](https://david-dm.org/drugan/csscombx.svg)](https://david-dm.org/drugan/csscombx)
 [![devDependency Status](https://david-dm.org/drugan/csscombx/dev-status.svg)](https://david-dm.org/drugan/csscombx#info=devDependencies)
 
-CSScomb is a coding style formatter for CSS.
+The current fork of the CSScombx coding style formatter is specifically intended to comply
+with the [Drupal CMS coding standards](https://www.drupal.org/docs/develop/standards/css/csscomb-settings-for-drupal-css-formatting-and-sort-tool). The default configuration might be found in the **config/drupal.json** file.
 You can easily write your own [configuration](doc/configuration.md) to make
-your style sheets beautiful and consistent.
+your style sheets beautiful and consistent. Just copy some of the **config/\*.json** files,
+put it into your project's root and rename the file to **.csscombx.json** (see the leading dot).
+Then edit the file according your needs. Note that any of a project child folders
+may have its own **.csscombx.json** file with different settings.
 
 The main feature is [sorting properties](doc/options.md#sort-order) in a specific order.
 It was inspired by [@miripiruni](https://github.com/miripiruni)'s
@@ -16,11 +20,10 @@ This is the new JavaScript version, based on the powerful CSS parser
 
 ## 0. Maintenance mode
 
-The tool is no longer being developed though we may still fix parsing errors and critical bugs.  
-That means that you should not expect any new features or options.  
+The tool has a restricted support on the current fork.
 
 If you'd like to become a maintainer of this project, please ping
-[@tonyganch](https://github.com/tonyganch).
+[@drugan](https://github.com/drugan).
 
 ## 1. Install
 
@@ -53,24 +56,29 @@ npm install csscombx --save-dev
 There are a number of ways to configure CSScomb:
 
 - Use one of [predefined configs](config)
-- Put `.csscomb.json` file in the project root.
+- Put **.csscombx.json** file in the project root or any of the nested folders.
 - Set path to config's file
-- Use `*.css` file as a template
+- Use **\*.css** file as a template
 
 ## 3. Use
 
 ### [Command Line](doc/usage-cli.md)
 
+Process all **\*.css**, **\*.scss**, **\*.sass** or **\*.less** files found in the **./my-styles** folder
+or any of its child folders.
+
 ```bash
-csscombx assets/css
+csscombx ./my-styles
 ```
 
 ### [Node.js module](doc/usage-node.md)
 
+Process files like the above using **config/zen.json** configuration file.
+
 ```js
 var Comb = require('csscombx');
 var comb = new Comb('zen');
-comb.processPath('assets/css');
+comb.processPath('./my-styles');
 ```
 
 ## 4. Contribute

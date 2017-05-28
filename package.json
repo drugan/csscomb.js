@@ -1,7 +1,7 @@
 {
   "name": "csscombx",
   "description": "CSS coding style formatter",
-  "version": "4.1.1",
+  "version": "4.2.0",
   "homepage": "https://github.com/drugan/csscombx",
   "author": "Mikhail Troshev <mishanga@yandex-team.ru>",
   "repository": {
@@ -36,7 +36,7 @@
     "lib"
   ],
   "bin": {
-    "csscomb": "./bin/csscomb"
+    "csscombx": "./bin/csscombx"
   },
   "scripts": {
     "build": "./scripts/build.sh",
